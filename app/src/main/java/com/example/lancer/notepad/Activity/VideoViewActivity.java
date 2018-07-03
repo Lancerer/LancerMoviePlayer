@@ -113,6 +113,10 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
      * 视频真实的高
      */
     private int videoHeight;
+    /**
+     * 判断是否是网络视频
+     */
+    private boolean netUri;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -125,6 +129,17 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
                     tvVideocontrollerStartTime.setText(MyUtils.parseTime(currentPosition));
                     //设置系统时间
                     tvVideocontrollerSystemTime.setText(new SimpleDateFormat("HH:mm").format(new Date(System.currentTimeMillis())));
+
+                    //网络视频缓冲处理
+                    if (netUri) {
+                        int buffer = vv.getBufferPercentage();
+                        int totalBuffer = buffer * seekbarVideo.getMax();
+                        int secondProgress = totalBuffer / 100;
+                        seekbarVideo.setSecondaryProgress(secondProgress);
+                    } else {
+                        seekbarVideo.setSecondaryProgress(0);
+                    }
+
                     //每秒更新一次
                     removeMessages(PROGRESS);
                     sendEmptyMessageDelayed(PROGRESS, 1000);
@@ -136,6 +151,7 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
             }
         }
     };
+
 
     /*
     * 沉浸式代码
@@ -181,8 +197,10 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
         if (videoList != null && videoList.size() > 0) {
             VideoBean videoBean = videoList.get(position);
             tvVideocontrollerVideoName.setText(videoBean.getTitle());
+            netUri = MyUtils.isNetUri(videoBean.getPath());
             vv.setVideoPath(videoBean.getPath());
         } else if (uri != null) {
+            netUri = MyUtils.isNetUri(uri);
             vv.setVideoURI(Uri.parse(uri));
         }
         initListener();
@@ -388,6 +406,7 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
         if (videoList != null && videoList.size() > 0) {
             position--;
             if (position >= 0) {
+                netUri = MyUtils.isNetUri(videoList.get(position).getPath());
                 vv.setVideoPath(videoList.get(position).getPath());
                 tvVideocontrollerVideoName.setText(videoList.get(position).getTitle());
                 setButtonState();
@@ -405,6 +424,7 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
         if (videoList != null && videoList.size() > 0) {
             position++;
             if (position < videoList.size()) {
+                netUri = MyUtils.isNetUri(videoList.get(position).getPath());
                 vv.setVideoPath(videoList.get(position).getPath());
                 tvVideocontrollerVideoName.setText(videoList.get(position).getTitle());
                 setButtonState();
@@ -516,6 +536,7 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * 将物理键和seekbar连接起来
+     *
      * @param keyCode
      * @param event
      * @return

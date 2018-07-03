@@ -13,8 +13,7 @@ public class MyUtils {
 
     /**
      * @param size(SD卡中电影的大小)
-     * @return
-     * 格式化电影大小方法
+     * @return 格式化电影大小方法
      */
     public static String formatSize(long size) {
         if (size / (1024 * 1024) > 1024) {
@@ -29,10 +28,9 @@ public class MyUtils {
 
     /**
      * @param time
-     * @return
-     * 格式化时间方法
+     * @return 格式化时间方法
      */
-    public static String formatTime(long time){
+    public static String formatTime(long time) {
         String min = time / (1000 * 60) + "";
         String sec = time % (1000 * 60) + "";
         if (min.length() < 2) {
@@ -64,4 +62,17 @@ public class MyUtils {
         return newTime;
     }
 
+    /**
+     * 判断传入的uri是本地视频还是网络视频
+     *
+     * @param uri 传入的视频播放地址
+     * @return
+     */
+    public static boolean isNetUri(String uri) {
+        boolean result = false;
+        if (uri.toLowerCase().startsWith("http") || uri.toLowerCase().startsWith("rtp") || uri.toLowerCase().startsWith("mms")) {
+            result = true;
+        }
+        return result;
+    }
 }
