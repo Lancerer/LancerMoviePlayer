@@ -1,5 +1,8 @@
 package com.example.lancer.notepad.util;
 
+import android.content.Context;
+import android.net.TrafficStats;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,6 +13,8 @@ import java.util.Date;
 
 public class MyUtils {
     public static DecimalFormat decimalFormat = new DecimalFormat("0.00");
+    public static long lastTotalRxBytes = 0;
+    public static long lastTimeStamp = 0;
 
     /**
      * @param size(SD卡中电影的大小)
@@ -75,4 +80,27 @@ public class MyUtils {
         }
         return result;
     }
+
+    /**
+     * 获得手机当前的网速
+     *
+     * @param context
+     * @return 返回的是网速
+     */
+    public static String getNetSpeed(Context context) {
+
+        long nowTotalRxBytes =
+                TrafficStats.getUidRxBytes(context.getApplicationInfo().uid) == TrafficStats.UNSUPPORTED ? 0 : (TrafficStats.getTotalRxBytes() / 1024);//转为KB;
+        long nowTimeStamp = System.currentTimeMillis();
+        long speed = ((nowTotalRxBytes - lastTotalRxBytes) * 1000 / (nowTimeStamp - lastTimeStamp));//毫秒转换
+
+        lastTimeStamp = nowTimeStamp;
+        lastTotalRxBytes = nowTotalRxBytes;
+
+        String speedStr = String.valueOf(speed) + " kb / s ";
+        return speedStr;
+
+    }
+
+
 }
