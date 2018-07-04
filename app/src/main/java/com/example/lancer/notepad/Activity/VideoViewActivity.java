@@ -1,6 +1,7 @@
 package com.example.lancer.notepad.Activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -330,7 +331,8 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * videoView错误事件
+     * 当VideoView因为一些原因（没有相应的视频解码器）不能播放视频时,
+     * 我们(关闭当前播放器，将当前的所有数据发送到万能播放器后)跳转到我们的万能播放器VitamioView去播放
      *
      * @param mp
      * @param what
@@ -339,8 +341,22 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
      */
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
-        ToastUtils.showShort(this, "视频播放错误！！！");
-        return false;
+        //释放ViewoView
+        if (vv != null) {
+            vv.stopPlayback();
+        }
+        Intent intent = new Intent(this, VitamioActivity.class);
+        if (videoList.size() > 0 && videoList != null) {
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("VideoList", (Serializable) videoList);
+            intent.putExtras(bundle);
+            intent.putExtra("position", position);
+        } else if (uri != null) {
+            intent.setData(Uri.parse(uri));
+        }
+        startActivity(intent);
+        finish();
+        return true;
     }
 
     /**
