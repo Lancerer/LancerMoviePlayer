@@ -1,6 +1,7 @@
 package com.example.lancer.notepad.Activity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -9,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
@@ -31,6 +33,8 @@ import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import io.vov.vitamio.provider.MediaStore;
 
 public class VideoViewActivity extends AppCompatActivity implements View.OnClickListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener, MediaPlayer.OnCompletionListener, SeekBar.OnSeekBarChangeListener {
     /*
@@ -157,7 +161,7 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
     /*
     * 沉浸式代码
     * */
-/*    @Override
+   @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus && Build.VERSION.SDK_INT >= 19) {
@@ -170,7 +174,7 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
-    }*/
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,6 +215,7 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
 
     private void initListener() {
         btVideocontrollerPlay.setOnClickListener(this);
+        btVideocontrollerMsg.setOnClickListener(this);
         btVideocontrollerExit.setOnClickListener(this);
         btVideocontrollerNext.setOnClickListener(this);
         btVideocontrollerPrevoius.setOnClickListener(this);
@@ -385,6 +390,9 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
             case R.id.bt_videocontroller_play:
                 StartOrPause();
                 break;
+            case R.id.bt_videocontroller_msg:
+                toVitamioPlayer();
+                break;
             case R.id.bt_videocontroller_exit:
                 finish();
                 break;
@@ -413,6 +421,35 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
         }
         handler.removeMessages(HIDEVIDEO);
         handler.sendEmptyMessageDelayed(HIDEVIDEO, 2000);
+    }
+
+    /**
+     * 点击切换使用Vitamio播放器播放
+     */
+    private void toVitamioPlayer() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("是否使用Vitamio播放器播放视频？");
+        builder.setNegativeButton("取消", null);
+        builder.setPositiveButton("确定啊", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (vv != null) {
+                    vv.stopPlayback();
+                }
+                Intent intent = new Intent(VideoViewActivity.this, VitamioActivity.class);
+                if (videoList.size() > 0 && videoList != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("VideoList", (Serializable) videoList);
+                    intent.putExtras(bundle);
+                    intent.putExtra("position", position);
+                } else if (uri != null) {
+                    intent.setData(Uri.parse(uri));
+                }
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.show();
     }
 
     /**

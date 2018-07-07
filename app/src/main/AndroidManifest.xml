@@ -77,7 +77,8 @@
             android:name=".Activity.VitamioActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            >
 
         </activity>
     </application>

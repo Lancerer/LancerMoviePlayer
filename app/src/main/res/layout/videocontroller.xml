@@ -36,7 +36,7 @@
                 android:layout_marginRight="2dp"
                 android:singleLine="true"
                 android:text="@string/system_time"
-                android:textColor="#ffffff"
+                android:textColor="@color/white"
                 android:textSize="15sp" />
 
         </LinearLayout>

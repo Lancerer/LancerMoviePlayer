@@ -32,7 +32,6 @@ public class IntentVideoFragment extends BaseFragment {
 
     @Override
     public void initView(View view) {
-
         topBack = view.findViewById(R.id.top_back);
         topTitle =view. findViewById(R.id.top_title);
         topSetting = view.findViewById(R.id.top_setting);
