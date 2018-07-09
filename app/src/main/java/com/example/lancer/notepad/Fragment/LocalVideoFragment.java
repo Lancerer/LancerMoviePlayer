@@ -42,11 +42,11 @@ public class LocalVideoFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (lists == null) {
-                tvLocalvideo.setVisibility(View.VISIBLE);
-            } else {
-                pbLcoalvideo.setVisibility(View.GONE);
+            if (lists != null && lists.size() > 0) {
                 lvLcoalvideo.setAdapter(new MyAdapter());
+
+            } else {
+                tvLocalvideo.setVisibility(View.VISIBLE);
             }
             pbLcoalvideo.setVisibility(View.GONE);
 

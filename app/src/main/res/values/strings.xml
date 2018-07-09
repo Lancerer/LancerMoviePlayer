@@ -4,9 +4,12 @@
     <string name="local_music">本地音乐</string>
     <string name="intent_video">网络视频</string>
     <string name="intent_music">网络音乐</string>
-    <string name="not_found">没有找到视频</string>
+    <string name="not_found">没有找到资源</string>
     <string name="video_name">視頻名称</string>
     <string name="start_time">开始时间</string>
     <string name="end_time">结束时间</string>
     <string name="system_time">系统时间</string>
+    <string name="singer">歌手名</string>
+    <string name="singname">歌曲名</string>
+    <string name="time">00:00</string>
 </resources>

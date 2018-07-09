@@ -65,7 +65,7 @@
                 <data android:mimeType="video/3gpp2" />
             </intent-filter>
         </activity>
-        <!--vitamio库的activity-->
+        <!-- vitamio库的activity -->
         <activity
             android:name="io.vov.vitamio.activity.InitActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
@@ -77,10 +77,9 @@
             android:name=".Activity.VitamioActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            >
-
-        </activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".Activity.LocalMusicActivity"></activity>
+        <service android:name=".service.MyService"/>
     </application>
 
 </manifest>
