@@ -53,4 +53,8 @@ public class Constants {
      * 歌曲进度条设置
      */
     public static final int ACTION_PROGRESS = 2;
+    /**
+     * 显示歌词
+     */
+    public static final int SHOW_LYRIC = 3;
 }

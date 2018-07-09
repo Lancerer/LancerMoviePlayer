@@ -40,7 +40,7 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
     private MediaPlayer mediaPlayer = null;
     private Messenger mMessenger;
     public static int playMode = 2;//1.单曲循环 2.列表循环 0.随机播放
-    private Random mRandom;
+    private Random mRandom=new Random();
     public static int prv_position;
 
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ccc"
+    android:background="#424242"
     tools:context="com.example.lancer.notepad.Activity.LocalMusicActivity">
 
     <RelativeLayout
@@ -28,6 +28,7 @@
             android:padding="3dp"
             android:singleLine="true"
             android:text="@string/singname"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -40,20 +41,37 @@
             android:padding="3dp"
             android:singleLine="true"
             android:text="@string/singer"
+
+            android:textColor="@color/white"
             android:textSize="12sp" />
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/iv_localmusic_album"
+    <!--<FrameLayout
+        android:id="@+id/fl"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_centerInParent="true"
-        android:src="@mipmap/user" />
+        android:layout_centerInParent="true">-->
+
+        <ImageView
+            android:id="@+id/iv_localmusic_album"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/user" />
+
+        <com.example.lancer.notepad.weight.LycView
+            android:id="@+id/lycView"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
+   <!-- </FrameLayout>-->
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iv_localmusic_album"
+        android:layout_above="@id/ll"
         android:layout_marginTop="60dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -87,6 +105,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
