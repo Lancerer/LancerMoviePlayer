@@ -15,7 +15,6 @@ import com.example.lancer.notepad.bean.MusicBean;
 import com.example.lancer.notepad.util.Constants;
 import com.example.lancer.notepad.util.LogUtils;
 import com.example.lancer.notepad.util.MusicUtils;
-import com.example.lancer.notepad.util.ThreadPoolUtil;
 import com.example.lancer.notepad.util.ToastUtils;
 
 import java.io.IOException;
@@ -24,10 +23,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
-
-
 /**
+ *
  * Created by Lancer on 2018/7/8.
  */
 
@@ -49,6 +46,13 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
         return null;
     }
 
+    /**
+     * 播放错误时直接播放下一曲
+     * @param mp
+     * @param what
+     * @param extra
+     * @return
+     */
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         ToastUtils.showShort(getApplicationContext(), "播放歌曲错误");
@@ -58,6 +62,10 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
         return true;
     }
 
+    /**
+     * 播放完成后自动播放下一曲
+     * @param mp
+     */
     @Override
     public void onCompletion(MediaPlayer mp) {
         Intent intent = new Intent();
@@ -65,6 +73,10 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
         sendBroadcast(intent);
     }
 
+    /**
+     * mediaplayer准备播放
+     * @param mp
+     */
     @Override
     public void onPrepared(MediaPlayer mp) {
         mediaPlayer.start();
@@ -78,16 +90,6 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
      * 将歌曲的总时长发送给Actvivity
      */
     private void sentCurrentPositionToMainTimer() {
-     /*   ThreadPoolUtil.getScheduledExecutor().scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                try {
-
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 0, 1000, TimeUnit.MILLISECONDS);*/
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -129,6 +131,9 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
         }
     }
 
+    /**
+     * 初始化广播初始化播放器
+     */
     @Override
     public void onCreate() {
         LogUtils.d(TAG, "onCreate");
@@ -137,6 +142,9 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
         super.onCreate();
     }
 
+    /**
+     * 出事播放器方法
+     */
     private void initMediaPlay() {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
@@ -146,6 +154,13 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
         mediaPlayer.setOnPreparedListener(this);
     }
 
+    /**
+     * 获得activity传递来的当前播放条目数，以及messanger（handler）
+     * @param intent
+     * @param flags
+     * @param startId
+     * @return
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
@@ -156,6 +171,9 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
         return super.onStartCommand(intent, flags, startId);
     }
 
+    /**
+     * 注销mediaplayer和广播
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -201,13 +219,6 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
                     play(currentPositon);
                     break;
                 case Constants.ACTION_NEXT:
-                  /*  currentPositon++;
-                    if (currentPositon <= lists.size() - 1) {
-                        play(currentPositon);
-                    } else {
-                        currentPositon = 0;
-                        play(currentPositon);
-                    }*/
                     prv_position = currentPositon;
                     if (playMode % 3 == 1) {//1.单曲循环
                         play(currentPositon);
@@ -270,6 +281,10 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
         }
     }
 
+    /**
+     * 随机播放
+     * @return
+     */
     private int getRandom() {
         currentPositon = mRandom.nextInt(lists.size());
         return currentPositon;
@@ -299,5 +314,4 @@ public class MyService extends Service implements MediaPlayer.OnErrorListener, M
             }
         }
     }
-
 }

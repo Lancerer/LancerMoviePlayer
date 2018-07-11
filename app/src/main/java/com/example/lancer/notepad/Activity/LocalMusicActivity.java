@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lancer.notepad.R;
+import com.example.lancer.notepad.adapter.popAdapter;
 import com.example.lancer.notepad.bean.MusicBean;
 import com.example.lancer.notepad.service.MyService;
 import com.example.lancer.notepad.util.Constants;
@@ -55,10 +57,7 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
     private boolean mIsPlaying;
     private boolean isShowLyc;
     private PopupWindow popupWindow;
-    /**
-     *
-     */
-    private int currentPosition;
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         @Override
@@ -77,7 +76,6 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
                 seekbarLocalmusic.setProgress(currentPosition);
                 seekbarLocalmusic.setMax(totalDuration);
             } else if (msg.what == Constants.SHOW_LYRIC) {
-
                 //1.得到当前的进度
                 try {
                     int currentPosition = mediaPlayer.getCurrentPosition();
@@ -209,6 +207,9 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
                 setPlayMode();
                 break;
             case R.id.iv_localmusic_next:
+                if (!mIsPlaying) {
+                    ivLocalmusicPlay.setImageResource(R.drawable.play_pause);
+                }
                 sendBroadcast(Constants.ACTION_NEXT);
                 break;
             case R.id.iv_localmusic_play:
@@ -225,17 +226,6 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
             case R.id.iv_localmusic_pre:
                 sendBroadcast(Constants.ACTION_UP);
                 break;
-
-              /*  if (!isShowLyc) {
-                    lycView.setVisibility(View.VISIBLE);
-                    ivLocalmusicAlbum.setVisibility(View.GONE);
-                    isShowLyc = false;
-                } else {
-                    lycView.setVisibility(View.GONE);
-                    ivLocalmusicAlbum.setVisibility(View.VISIBLE);
-                    isShowLyc = true;
-                }*/
-
             default:
                 break;
 
@@ -253,7 +243,7 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         popupWindow.setHeight(ViewGroup.LayoutParams.FILL_PARENT);
         //2.设置布局中各个View点击事件
         ListView lv_pop = contentView.findViewById(R.id.lv_pop);
-        lv_pop.setAdapter(new MyAdapter());
+        lv_pop.setAdapter(new popAdapter(lists,this));
         lv_pop.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -272,9 +262,10 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         });
         //3.设置popwindow要显示的位置
         popupWindow.setFocusable(true);
-        popupWindow.showAtLocation(LayoutInflater.from(this).inflate(R.layout.activity_localmusic,null), Gravity.BOTTOM, 0, 0);
-       // popupWindow.setAnimationStyle(R.style.pop_anim);
+        popupWindow.showAtLocation(LayoutInflater.from(this).inflate(R.layout.activity_localmusic, null), Gravity.BOTTOM, 0, 0);
+        // popupWindow.setAnimationStyle(R.style.pop_anim);
     }
+
     private void sendBrodcast(String action, int position) {
         Intent intent = new Intent();
         intent.putExtra("position", position);
@@ -340,42 +331,6 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
-    private class MyAdapter extends BaseAdapter {
-        @Override
-        public int getCount() {
-            return lists.size();
-        }
 
-        @Override
-        public MusicBean getItem(int position) {
-            return lists.get(position);
-        }
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-            if (convertView == null) {
-                convertView = View.inflate(LocalMusicActivity.this, R.layout.item_sing, null);
-                viewHolder = new ViewHolder();
-                viewHolder.tvItemSing = convertView.findViewById(R.id.tv_item_sing);
-                viewHolder.tvItemSinger = convertView.findViewById(R.id.tv_item_singer);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-            MusicBean item = getItem(position);
-            viewHolder.tvItemSing.setText("" + item.getName());
-            viewHolder.tvItemSinger.setText("" + item.getArtist());
-            return convertView;
-        }
-    }
-    public class ViewHolder {
-        TextView tvItemSing;
-        TextView tvItemSinger;
-    }
 }

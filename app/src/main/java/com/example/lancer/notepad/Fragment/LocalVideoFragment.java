@@ -2,25 +2,18 @@ package com.example.lancer.notepad.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
-import android.support.v7.widget.CardView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.lancer.notepad.Activity.VideoViewActivity;
 import com.example.lancer.notepad.R;
+import com.example.lancer.notepad.adapter.LocalVideoAdapter;
 import com.example.lancer.notepad.bean.VideoBean;
-import com.example.lancer.notepad.util.MyUtils;
-import com.example.lancer.notepad.util.ToastUtils;
 import com.example.lancer.notepad.util.VideoUtils;
 
 import java.io.Serializable;
@@ -43,7 +36,7 @@ public class LocalVideoFragment extends BaseFragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (lists != null && lists.size() > 0) {
-                lvLcoalvideo.setAdapter(new MyAdapter());
+                lvLcoalvideo.setAdapter(new LocalVideoAdapter(lists, getContext()));
 
             } else {
                 tvLocalvideo.setVisibility(View.VISIBLE);
@@ -114,51 +107,5 @@ public class LocalVideoFragment extends BaseFragment {
         return R.layout.fragment_list;
     }
 
-    private class MyAdapter extends BaseAdapter {
 
-        @Override
-        public int getCount() {
-            return lists.size();
-        }
-
-        @Override
-        public VideoBean getItem(int position) {
-            return lists.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-            if (convertView == null) {
-                convertView = View.inflate(getContext(), R.layout.item_video, null);
-                viewHolder = new ViewHolder();
-                viewHolder.ivItemLocalvideo = convertView.findViewById(R.id.iv_item_localvideo);
-                viewHolder.tvItemTitle = convertView.findViewById(R.id.tv_item_title);
-                viewHolder.tvItemTime = convertView.findViewById(R.id.tv_item_time);
-                viewHolder.tvItemSize = convertView.findViewById(R.id.tv_item_size);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-            VideoBean item = getItem(position);
-            viewHolder.ivItemLocalvideo.setImageResource(R.mipmap.user);
-            viewHolder.tvItemTitle.setText(item.getTitle());
-            viewHolder.tvItemTime.setText("时长:" + MyUtils.formatTime(item.getDuration()));
-            viewHolder.tvItemSize.setText("大小:" + MyUtils.formatSize(item.getSize()));
-            return convertView;
-        }
-    }
-
-    static class ViewHolder {
-        private ImageView ivItemLocalvideo;
-        private TextView tvItemTitle;
-        private TextView tvItemTime;
-        private TextView tvItemSize;
-
-    }
 }

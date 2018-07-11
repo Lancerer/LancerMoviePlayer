@@ -2,7 +2,7 @@
     <string name="app_name">Lancer影音</string>
     <string name="local_video">本地视频</string>
     <string name="local_music">本地音乐</string>
-    <string name="intent_video">网络视频</string>
+    <string name="intent_video">网络段子</string>
     <string name="intent_music">网络音乐</string>
     <string name="not_found">没有找到资源</string>
     <string name="video_name">視頻名称</string>
@@ -12,4 +12,5 @@
     <string name="singer">歌手名</string>
     <string name="singname">歌曲名</string>
     <string name="time">00:00</string>
+    <string name="no_data">资源加载失败</string>
 </resources>

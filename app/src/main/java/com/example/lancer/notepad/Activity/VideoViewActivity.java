@@ -158,9 +158,9 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
     };
 
 
-    /*
+/*    *//*
     * 沉浸式代码
-    * */
+    * *//*
    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -174,7 +174,7 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
-    }
+    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -489,6 +489,7 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
 
     /**
      * 设置按钮的状态（播放第一个视频时，上一个按钮不可点击，播放最后一个视频时，下一个视频按钮不可点击）
+     * 有三种情况：只有一个视频的时候，只有两个视频，三个或三个以上
      */
     private void setButtonState() {
         if (videoList != null && videoList.size() > 0) {
@@ -526,9 +527,8 @@ public class VideoViewActivity extends AppCompatActivity implements View.OnClick
             setEnable(false);
         }
     }
-
     /**
-     * @param isEnable
+     * @param isEnable 设置上一个下一个按钮是否可点击
      */
     private void setEnable(boolean isEnable) {
         if (isEnable) {
