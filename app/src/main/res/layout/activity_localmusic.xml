@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#424242"
-    tools:context="com.example.lancer.notepad.Activity.LocalMusicActivity">
+    tools:context="com.example.lancer.MovieMusic.Activity.LocalMusicActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
             android:layout_centerInParent="true"
             android:src="@mipmap/user" />
 
-        <com.example.lancer.notepad.weight.LycView
+        <com.example.lancer.MovieMusic.weight.LycView
             android:id="@+id/lycView"
             android:layout_width="250dp"
             android:layout_height="250dp"

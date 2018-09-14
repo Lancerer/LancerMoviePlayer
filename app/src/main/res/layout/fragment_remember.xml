@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.lancer.notepad.Fragment.IntentMusicFragment">
+    tools:context="com.example.lancer.MovieMusic.Fragment.IntentMusicFragment">
 
     <include layout="@layout/common_hander" />
 
